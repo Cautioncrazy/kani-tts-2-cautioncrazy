@@ -401,6 +401,12 @@ class KaniTTS2ForCausalLM(Lfm2PreTrainedModel, GenerationMixin):
     """
     _tied_weights_keys = ["lm_head.weight"]
 
+    @classmethod
+    def _supports_default_dynamic_cache(cls) -> bool:
+        # LFM2 uses Lfm2HybridConvCache (not DynamicCache) for its conv layers.
+        # Returning False prevents GenerationMixin from pre-creating a DynamicCache.
+        return False
+
     def __init__(
         self,
         config: Lfm2Config,
