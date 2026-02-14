@@ -1,19 +1,28 @@
-# KaniTTS-2 😼
+<div align="center">
+    <img width="1728" height="862" alt="logo" src="https://github.com/user-attachments/assets/856eae00-29b2-4f65-a934-57d2677676f0" />
+      <br><br>
+
+  [![](https://dcbadge.limes.pink/api/server/https://discord.gg/NzP3rjB4SB?style=flat)](https://discord.gg/NzP3rjB4SB) [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+# KaniTTS2
 
 **The Second Coming of the Kani** - A significantly improved text-to-speech library that pushes the boundaries of neural audio generation.
+</div>
+
+
 
 KaniTTS-2 is a research-grade TTS system built on causal language models with advanced architectural innovations. It's simple to use, but powerful under the hood.
 
-## What's New in KaniTTS-2? 🚀
+## What's New in KaniTTS-2?
 
 Major architectural improvements over the first release:
 
-- **🎯 Speaker Embeddings**: True voice control through learned speaker representations. No more fine-tuning for each speaker - just clone any voice with a reference audio sample!
-- **🔄 Learnable RoPE Theta**: Per-layer frequency scaling for better position encoding across the model depth
-- **📍 Frame-Level Position Encoding**: Precise temporal control with configurable audio frame positioning
-- **🌍 Language Tag Support**: Multi-lingual and multi-accent support through language identifiers (when model is trained with tags)
-- **⏱️ Extended Generation**: Up to 40 seconds of continuous high-quality audio generation
-- **🎨 Flexible Sampling**: Temperature, top-p, and repetition penalty moved to generation-time for easier experimentation
+- ** Speaker Embeddings**: True voice control through learned speaker representations. No more fine-tuning for each speaker - just clone any voice with a reference audio sample!
+- ** Learnable RoPE Theta**: Per-layer frequency scaling for better position encoding across the model depth
+- ** Frame-Level Position Encoding**: Precise temporal control with configurable audio frame positioning
+- ** Language Tag Support**: Multi-lingual and multi-accent support through language identifiers (when model is trained with tags)
+- ** Extended Generation**: Up to 40 seconds of continuous high-quality audio generation
+- ** Flexible Sampling**: Temperature, top-p, and repetition penalty moved to generation-time for easier experimentation
 
 
 
@@ -112,7 +121,7 @@ audio, text = model("Hello!", speaker_emb="my_voice.pt")
 
 ### Language Tag Support
 
-Some models are trained with language/accent tags for better multi-lingual control:
+**Some models** are trained with language/accent tags for better multi-lingual control:
 
 ```python
 from kani_tts import KaniTTS
@@ -449,7 +458,7 @@ Input text + optional (language_tag, speaker_emb)
 
 ## Model Compatibility
 
-KaniTTS-2 works with **modified LLaMA-based causal language models** trained for TTS with:
+KaniTTS-2 works with **modified LLaMA-based causal language models** (LFM2) trained for TTS with:
 
 ✅ **Required characteristics:**
 - Extended vocabulary (text tokens + audio tokens + control tokens)
@@ -492,19 +501,6 @@ model = KaniTTS('model-name', show_info=True)
 - Use language tags for better accent control
 - Language tags are especially important for disambiguating homophones
 
-### Common Issues
-
-**Issue**: Generated audio is too short or cuts off
-**Solution**: Increase `max_new_tokens` in model initialization:
-```python
-model = KaniTTS('model-name', max_new_tokens=4000)
-```
-
-**Issue**: Voice doesn't match reference audio
-**Solution**:
-- Check that reference audio is good quality
-- Try longer reference audio (15-20 seconds)
-- Ensure reference contains only one speaker
 
 ### Voice Cloning Best Practices 🎯
 
@@ -576,35 +572,77 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Citation
 
-```
+```bibtex
+
+@article{liquidai2025lfm2,
+ title={LFM2 Technical Report},
+ author={Liquid AI},
+ journal={arXiv preprint arXiv:2511.23404},
+ year={2025}
+}
+
 @inproceedings{emilialarge,
   author={He, Haorui and Shang, Zengqiang and Wang, Chaoren and Li, Xuyuan and Gu, Yicheng and Hua, Hua and Liu, Liwei and Yang, Chen and Li, Jiaqi and Shi, Peiyang and Wang, Yuancheng and Chen, Kai and Zhang, Pengyuan and Wu, Zhizheng},
   title={Emilia: A Large-Scale, Extensive, Multilingual, and Diverse Dataset for Speech Generation},
   booktitle={arXiv:2501.15907},
   year={2025}
 }
-```
-```
+
 @article{emonet_voice_2025,
   author={Schuhmann, Christoph and Kaczmarczyk, Robert and Rabby, Gollam and Friedrich, Felix and Kraus, Maurice and Nadi, Kourosh and Nguyen, Huu and Kersting, Kristian and Auer, Sören},
   title={EmoNet-Voice: A Fine-Grained, Expert-Verified Benchmark for Speech Emotion Detection},
   journal={arXiv preprint arXiv:2506.09827},
   year={2025}
 }
+
+@inproceedings{gengembre24_interspeech,
+  title     = {Disentangling prosody and timbre embeddings via voice conversion},
+  author    = {Nicolas Gengembre and Olivier {Le Blouch} and Cédric Gendrot},
+  year      = {2024},
+  booktitle = {Interspeech 2024},
+  pages     = {2765--2769},
+  doi       = {10.21437/Interspeech.2024-207},
+  issn      = {2958-1796},
+}
 ```
 
-## Acknowledgments
+## Responsible Use
 
-This project builds on the shoulders of giants:
+**Prohibited activities include:**
+- Illegal content or harmful, threatening, defamatory, or obscene material
+- Hate speech, harassment, or incitement of violence
+- Generating false or misleading information
+- Impersonating individuals without consent
+- Malicious activities such as spamming, phishing, or fraud
 
-- **[Hugging Face Transformers](https://github.com/huggingface/transformers)**: LLaMA-based architecture and training framework
-- **[NVIDIA NeMo](https://github.com/NVIDIA/NeMo)**: NanoCodec neural audio codec (22kHz, 0.6kbps, 12.5fps)
-- **[Orange SA Speaker-WavLM](https://huggingface.co/Orange/Speaker-wavLM-tbr)**: WavLM-based speaker embedding model (CC-BY-SA-3.0)
-- **[Microsoft WavLM](https://github.com/microsoft/unilm/tree/master/wavlm)**: Self-supervised speech representation learning
-- **[PyTorch](https://pytorch.org/)**: Deep learning framework
-- **[Emilia Dataset](https://arxiv.org/abs/2501.15907)**: Large-scale multilingual speech dataset
+By using this model, you agree to comply with these restrictions and all applicable laws.
 
-Special thanks to the open-source community for making research accessible! 💜
+## Model Training
+
+Training is implemented in a separate repository:
+
+[nineninesix-ai/kani-tts-2-pretrain](https://github.com/nineninesix-ai/kani-tts-2-pretrain)
+
+It provides the full training pipeline, including data preprocessing, configuration management, and distributed training support.
+
+The training code is under active development and will continue to receive updates and improvements.
+
+If you use this code in your research, please cite:
+
+```bibtex
+@software{kani_tts_2,
+  author = {Nineninesix},
+  title = {KaniTTS2: Text-to-Speech Model with Frame-level Position Encoding},
+  year = {2026},
+  publisher = {Hugging Face},
+  howpublished = {\url{https://github.com/nineninesix-ai/kani-tts-2}},
+  note = {Open-source TTS model}
+}
+```
+
+
+## Contact
+Have a question, feedback, or need support? Please fill out our [contact form](https://airtable.com/appX2G2TpoRk4M5Bf/pagO2xbIOjiwulPcP/form) and we'll get back to you as soon as possible.
 
 ---
 
