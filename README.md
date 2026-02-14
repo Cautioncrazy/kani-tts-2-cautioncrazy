@@ -17,12 +17,12 @@ KaniTTS-2 is a research-grade TTS system built on causal language models with ad
 
 Major architectural improvements over the first release:
 
-- ** Speaker Embeddings**: True voice control through learned speaker representations. No more fine-tuning for each speaker - just clone any voice with a reference audio sample!
-- ** Learnable RoPE Theta**: Per-layer frequency scaling for better position encoding across the model depth
-- ** Frame-Level Position Encoding**: Precise temporal control with configurable audio frame positioning
-- ** Language Tag Support**: Multi-lingual and multi-accent support through language identifiers (when model is trained with tags)
-- ** Extended Generation**: Up to 40 seconds of continuous high-quality audio generation
-- ** Flexible Sampling**: Temperature, top-p, and repetition penalty moved to generation-time for easier experimentation
+- **Speaker Embeddings**: True voice control through learned speaker representations. No more fine-tuning for each speaker - just clone any voice with a reference audio sample!
+- **Learnable RoPE Theta**: Per-layer frequency scaling for better position encoding across the model depth
+- **Frame-Level Position Encoding**: Precise temporal control with configurable audio frame positioning
+- **Language Tag Support**: Multi-lingual and multi-accent support through language identifiers (when model is trained with tags)
+- **Extended Generation**: Up to 40 seconds of continuous high-quality audio generation
+- **Flexible Sampling**: Temperature, top-p, and repetition penalty moved to generation-time for easier experimentation
 
 
 
