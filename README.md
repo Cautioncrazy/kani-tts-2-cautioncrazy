@@ -617,13 +617,15 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 By using this model, you agree to comply with these restrictions and all applicable laws.
 
-## Model Training
+## Resources
 
-Training is implemented in a separate repository:
+**Models:** [Pretrained Model](https://huggingface.co/nineninesix/kani-tts-2-pt), [English Model](https://huggingface.co/nineninesix/kani-tts-2-en)
 
-[nineninesix-ai/kani-tts-2-pretrain](https://github.com/nineninesix-ai/kani-tts-2-pretrain)
+**Pretraining Framework**
+Train your own TTS model on your language or accent from scratch using this open-source pretraining framework: [KaniTTS2-Pretrain](https://github.com/nineninesix-ai/kani-tts-2-pretrain).
 
-It provides the full training pipeline, including data preprocessing, configuration management, and distributed training support.
+**Example Dataset**: https://huggingface.co/datasets/nineninesix/kanitts2-es-nano-codec-speaker-emb-dataset
+
 
 The training code is under active development and will continue to receive updates and improvements.
 
@@ -639,7 +641,13 @@ If you use this code in your research, please cite:
   note = {Open-source TTS model}
 }
 ```
+## vLLM Integration
 
+Coming soon.
+
+## Tech Report
+
+Coming soon.
 
 ## Contact
 Have a question, feedback, or need support? Please fill out our [contact form](https://airtable.com/appX2G2TpoRk4M5Bf/pagO2xbIOjiwulPcP/form) and we'll get back to you as soon as possible.
