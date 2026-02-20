@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="p-8 h-full flex flex-col items-center justify-center bg-gray-50">
+    <div class="max-w-4xl w-full bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800 flex items-center gap-3">
+            <i data-lucide="mic" class="w-8 h-8 text-blue-600"></i> Voice Cloning
+        </h1>
+
+        <div class="mb-8 p-6 bg-blue-50 border border-blue-100 rounded-lg">
+            <h2 class="text-lg font-semibold text-blue-800 mb-2">Create New Voice</h2>
+            <form id="voice-upload-form" class="flex flex-col gap-4" enctype="multipart/form-data">
+                <div class="flex flex-col gap-1">
+                    <label for="voice-name" class="text-sm font-medium text-gray-700">Voice Name</label>
+                    <input type="text" id="voice-name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label for="voice-file" class="text-sm font-medium text-gray-700">Reference Audio</label>
+                    <input type="file" id="voice-file" name="file" accept="audio/*" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 bg-white">
+                    <p class="text-xs text-gray-500 mt-1">Upload a clear audio sample (WAV, MP3, etc.) of the speaker you want to clone.</p>
+                </div>
+
+                <button type="submit" class="self-end bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50">
+                    <i data-lucide="upload" class="w-4 h-4"></i> Create Voice
+                </button>
+            </form>
+            <div id="upload-status" class="mt-4 hidden text-sm font-medium text-center"></div>
+        </div>
+
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Your Voices</h2>
+        <div id="voices-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Voices inserted here -->
+            <div class="text-gray-500 text-center col-span-2 py-8">Loading voices...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Specific script for voices page
+    document.addEventListener('DOMContentLoaded', () => {
+        loadVoices();
+
+        const form = document.getElementById('voice-upload-form');
+        const status = document.getElementById('upload-status');
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            submitBtn.disabled = true;
+            status.textContent = 'Processing audio and creating embedding... This may take a moment.';
+            status.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            status.classList.add('text-blue-600');
+
+            try {
+                const response = await fetch('/api/voices/clone', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const voice = await response.json();
+                    status.textContent = `Voice "${voice.name}" created successfully!`;
+                    status.classList.replace('text-blue-600', 'text-green-600');
+                    form.reset();
+                    loadVoices(); // Reload list
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to create voice');
+                }
+            } catch (error) {
+                status.textContent = `Error: ${error.message}`;
+                status.classList.replace('text-blue-600', 'text-red-600');
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+    });
+
+    async function loadVoices() {
+        const list = document.getElementById('voices-list');
+        try {
+            const response = await fetch('/api/voices');
+            const voices = await response.json();
+
+            list.innerHTML = voices.map(voice => `
+                <div class="bg-white border border-gray-200 rounded-lg p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold">
+                            ${voice.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                            <h3 class="font-medium text-gray-900">${voice.name}</h3>
+                            <p class="text-xs text-gray-500">Created: ${new Date(voice.created_at).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+                    <button class="text-gray-400 hover:text-red-500 transition-colors hidden" title="Delete Voice">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            if (voices.length === 0) {
+                list.innerHTML = '<div class="col-span-2 text-center text-gray-500 py-8">No custom voices yet. Upload one above!</div>';
+            }
+            lucide.createIcons();
+        } catch (error) {
+            list.innerHTML = '<div class="col-span-2 text-center text-red-500 py-8">Failed to load voices.</div>';
+        }
+    }
+</script>
+{% endblock %}

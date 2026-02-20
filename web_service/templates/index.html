@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex-1 flex flex-col h-full bg-white relative">
+
+    <!-- Top Bar: Model Selection & Status -->
+    <header class="p-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between shadow-sm sticky top-0 z-10">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-gray-600">Model:</span>
+                <select id="model-select" class="text-sm font-medium border border-gray-300 rounded px-2 py-1 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="" disabled selected>Select Model</option>
+                    <option value="nineninesix/kani-tts-2">nineninesix/kani-tts-2 (Default)</option>
+                    <option value="nineninesix/kani-tts-2-en">nineninesix/kani-tts-2-en</option>
+                    <option value="custom">Load Custom...</option>
+                </select>
+                <div id="model-loader" class="hidden animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 ml-2"></div>
+                <span id="model-status" class="text-xs text-gray-500 ml-2">Checking...</span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button id="clone-voice-btn" onclick="window.location.href='/voices'" class="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1">
+                <i data-lucide="mic" class="w-4 h-4"></i> Voice Cloning
+            </button>
+        </div>
+    </header>
+
+    <!-- Chat History -->
+    <div id="chat-container" class="flex-1 overflow-y-auto p-6 space-y-6 pb-24 scroll-smooth">
+        <!-- Messages will be inserted here -->
+        <div class="flex flex-col items-center justify-center h-full text-gray-400">
+            <i data-lucide="message-square" class="w-12 h-12 mb-2 opacity-50"></i>
+            <p>Select a chat or start a new one to begin.</p>
+        </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="absolute bottom-0 left-0 w-full p-4 bg-white border-t border-gray-200 shadow-lg">
+        <div class="max-w-4xl mx-auto flex flex-col gap-3">
+            <div class="flex items-center gap-4">
+                <div class="flex-1">
+                    <label for="voice-select" class="block text-xs font-medium text-gray-500 mb-1">Voice</label>
+                    <select id="voice-select" class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                        <option value="">Default Voice</option>
+                        <!-- Voices populated dynamically -->
+                    </select>
+                </div>
+                <div class="w-24">
+                     <label for="temperature" class="block text-xs font-medium text-gray-500 mb-1">Temp</label>
+                     <input type="number" id="temperature" value="1.0" step="0.1" min="0.1" max="2.0" class="w-full text-sm border border-gray-300 rounded-lg px-2 py-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="w-24">
+                     <label for="top_p" class="block text-xs font-medium text-gray-500 mb-1">Top P</label>
+                     <input type="number" id="top_p" value="0.95" step="0.05" min="0.1" max="1.0" class="w-full text-sm border border-gray-300 rounded-lg px-2 py-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+
+            <div class="relative flex items-end gap-2">
+                <textarea id="text-input" rows="3" placeholder="Enter text to generate speech..." class="w-full text-sm border border-gray-300 rounded-xl px-4 py-3 focus:ring-blue-500 focus:border-blue-500 resize-none shadow-sm"></textarea>
+                <button id="generate-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-medium p-3 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center">
+                    <i data-lucide="play" class="w-6 h-6 fill-current"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Custom Model Modal -->
+<div id="custom-model-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 w-96 shadow-xl transform transition-all scale-100">
+        <h3 class="text-lg font-bold mb-4">Load Custom Model</h3>
+        <input type="text" id="custom-model-input" placeholder="HuggingFace model ID or path" class="w-full border border-gray-300 rounded px-3 py-2 mb-4 focus:ring-blue-500 focus:border-blue-500">
+        <div class="flex justify-end gap-2">
+            <button id="cancel-custom-model" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancel</button>
+            <button id="load-custom-model" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Load</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
